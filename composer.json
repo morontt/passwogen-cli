@@ -1,0 +1,22 @@
+{
+    "name": "morontt/passwogen-cli",
+    "description": "Password generator",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "morontt",
+            "email": "morontt@gmail.com",
+            "homepage": "http://morontt.info",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Passwogen\\": "src/" }
+    },
+    "require": {
+        "php": ">=5.4",
+        "ext-openssl": "*",
+        "symfony/console": "2.7.*"
+    },
+    "minimum-stability": "stable"
+}
