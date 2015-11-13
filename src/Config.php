@@ -8,9 +8,9 @@ class Config
 {
     public function __construct()
     {
-        $configDir = self::configDir();
-        $configFile = self::configFile();
-        $defaultStorage = self::configDir() . '/secret.enc';
+        $configDir = $this->configDir();
+        $configFile = $this->configFile();
+        $defaultStorage = $this->configDir() . '/secret.enc';
 
         $fs = new Filesystem();
         if (!$fs->exists($configDir)) {

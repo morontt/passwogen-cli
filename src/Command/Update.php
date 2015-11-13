@@ -8,13 +8,13 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Generate extends BaseCommand
+class Update extends BaseCommand
 {
     protected function configure()
     {
         $this
-            ->setName('generate')
-            ->setDescription('Generate password')
+            ->setName('update')
+            ->setDescription('Update password')
             ->addArgument(
                 'name',
                 InputArgument::REQUIRED,
@@ -36,14 +36,14 @@ class Generate extends BaseCommand
         $storage = new Storage($this->askMasterPassword($input, $output), $configData['storage_path']);
 
         $name = $input->getArgument('name');
-        if ($storage->get($name) === null) {
+        if ($storage->get($name) !== null) {
             $password = $this->generate($configData['length']);
             $storage->set($name, $password);
 
             $output->writeln('');
             $output->writeln(sprintf('password: <comment>%s</comment>', $password));
         } else {
-            $this->error($output, sprintf('key "%s" already exists', $name));
+            $this->error($output, sprintf('key "%s" not found', $name));
         }
     }
 }

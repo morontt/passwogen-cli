@@ -84,7 +84,12 @@ class Storage
             return [];
         }
 
-        $data = json_decode(file_get_contents($this->path), true);
+        $content = trim(file_get_contents($this->path));
+        if (!$content) {
+            return [];
+        }
+
+        $data = json_decode($content, true);
         if (!$data) {
             throw new \Exception('Invalid master password');
         }
