@@ -96,7 +96,7 @@ class Storage
     {
         $result = [];
         $curr = (new \DateTime('now'))->format('U');
-        $limit = (int)$curr - 60;
+        $limit = (int)$curr - 15552000; // 60 * 60 * 24 * 30 * 6
         foreach ($this->getItems() as $item) {
             $itemTime = \DateTime::createFromFormat('Y-m-d H:i:s', $item['time']);
             $timestamp = (int)($itemTime->format('U'));
