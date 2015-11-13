@@ -6,6 +6,7 @@ use Passwogen\Config;
 use Passwogen\Storage;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Generate extends BaseCommand
@@ -20,6 +21,7 @@ class Generate extends BaseCommand
                 InputArgument::REQUIRED,
                 'Name for password'
             )
+            ->addOption('password', 'p', InputOption::VALUE_OPTIONAL, 'password')
         ;
     }
 
@@ -51,7 +53,10 @@ class Generate extends BaseCommand
         }
 
         if ($passwordItem === null) {
-            $password = $this->generate($configData['length']);
+            $password = $input->getOption('password');
+            if ($password === null) {
+                $password = $this->generate($configData['length']);
+            }
             $storage->set($name, $password);
 
             $output->writeln('');

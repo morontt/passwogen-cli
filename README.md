@@ -26,6 +26,9 @@
     passwogen update mail.ru
     # или
     passwogen u mail.ru
+    
+    # при создании и обновлении пароль можно указать явно, через опцию -p
+    # или --password
 
     # посмотреть пароль для mail.ru
     passwogen show mail.ru
