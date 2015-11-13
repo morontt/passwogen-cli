@@ -16,6 +16,7 @@
     "require": {
         "php": ">=5.4",
         "ext-openssl": "*",
+        "ext-zlib": "*",
         "symfony/console": "2.7.*",
         "symfony/filesystem": "2.7.*"
     },

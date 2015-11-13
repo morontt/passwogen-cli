@@ -96,12 +96,12 @@ class Storage
             return [];
         }
 
-        $content = trim(file_get_contents($this->path));
+        $content = file_get_contents($this->path);
         if (!$content) {
             return [];
         }
 
-        $data = json_decode($content, true);
+        $data = json_decode($this->decode($content), true);
         if (!$data) {
             throw new \Exception('Invalid master password');
         }
@@ -114,7 +114,7 @@ class Storage
      */
     protected function save(array $data)
     {
-        $content = json_encode($data) . PHP_EOL;
+        $content = $this->encode(json_encode($data) . PHP_EOL);
 
         $fs = new Filesystem();
         if (!$fs->exists($this->path)) {
@@ -122,5 +122,31 @@ class Storage
         }
 
         $fs->dumpFile($this->path, $content);
+    }
+
+    /**
+     * @param string $str
+     * @return string
+     */
+    protected function encode($str)
+    {
+        return openssl_encrypt(gzencode($str), 'bf', $this->passwd, 0, $this->getVector());
+    }
+
+    /**
+     * @param string $raw
+     * @return string
+     */
+    protected function decode($raw)
+    {
+        return @gzdecode(openssl_decrypt($raw, 'bf', $this->passwd, 0, $this->getVector()));
+    }
+
+    /**
+     * @return string
+     */
+    protected function getVector()
+    {
+        return substr(sha1($this->passwd), 0, 8);
     }
 }
