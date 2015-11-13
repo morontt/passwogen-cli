@@ -73,6 +73,18 @@ class Storage
         $this->save($items);
     }
 
+    public function find($key)
+    {
+        $result = [];
+        foreach ($this->getItems() as $item) {
+            if (@preg_match("/{$key}/i", $item['key'])) {
+                $result[] = $item;
+            }
+        }
+
+        return $result;
+    }
+
     /**
      * @return array
      * @throws \Exception
