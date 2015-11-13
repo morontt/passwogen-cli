@@ -73,11 +73,34 @@ class Storage
         $this->save($items);
     }
 
+    /**
+     * @param $key
+     * @return array
+     */
     public function find($key)
     {
         $result = [];
         foreach ($this->getItems() as $item) {
             if (@preg_match("/{$key}/i", $item['key'])) {
+                $result[] = $item;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return array
+     */
+    public function outdated()
+    {
+        $result = [];
+        $curr = (new \DateTime('now'))->format('U');
+        $limit = (int)$curr - 60;
+        foreach ($this->getItems() as $item) {
+            $itemTime = \DateTime::createFromFormat('Y-m-d H:i:s', $item['time']);
+            $timestamp = (int)($itemTime->format('U'));
+            if ($timestamp < $limit) {
                 $result[] = $item;
             }
         }

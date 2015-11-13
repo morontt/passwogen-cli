@@ -3,22 +3,16 @@
 namespace Passwogen\Command;
 
 use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Find extends BaseCommand
+class Outdated extends BaseCommand
 {
     protected function configure()
     {
         $this
-            ->setName('find')
-            ->setDescription('Find passwords (by regexp)')
-            ->addArgument(
-                'name',
-                InputArgument::REQUIRED,
-                'Name for password'
-            )
+            ->setName('outdated')
+            ->setDescription('Show outdated passwords')
         ;
     }
 
@@ -31,21 +25,22 @@ class Find extends BaseCommand
     {
         $storage = $this->getStorage($input, $output);
         $table = new Table($output);
-        $table->setHeaders(['Key', 'Password']);
+        $table->setHeaders(['Key', 'Last Update']);
 
         $rows = [];
         $items = [];
 
         try {
-            $items = $storage->find($input->getArgument('name'));
+            $items = $storage->outdated();
         } catch(\Exception $e) {
             $this->error($output, $e->getMessage());
         }
 
         foreach ($items as $item) {
+            $itemTime = \DateTime::createFromFormat('Y-m-d H:i:s', $item['time']);
             $rows[] = [
                 $item['key'],
-                sprintf('<comment>%s</comment>', $item['password']),
+                sprintf('<comment>%s</comment>', $itemTime->format('d M Y')),
             ];
         }
 
