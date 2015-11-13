@@ -2,8 +2,6 @@
 
 namespace Passwogen\Command;
 
-use Passwogen\Config;
-use Passwogen\Storage;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -30,13 +28,17 @@ class Show extends BaseCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $config = new Config();
-        $configData = $config->get();
-
-        $storage = new Storage($this->askMasterPassword($input, $output), $configData['storage_path']);
+        $storage = $this->getStorage($input, $output);
 
         $name = $input->getArgument('name');
-        $passwordItem = $storage->get($name);
+        $passwordItem = null;
+
+        try {
+            $passwordItem = $storage->get($name);
+        } catch(\Exception $e) {
+            $this->error($output, $e->getMessage());
+        }
+
         if ($passwordItem !== null) {
             $output->writeln('');
             $output->writeln(sprintf('password: <comment>%s</comment>', $passwordItem['password']));

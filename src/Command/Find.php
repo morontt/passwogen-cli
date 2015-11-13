@@ -2,8 +2,6 @@
 
 namespace Passwogen\Command;
 
-use Passwogen\Config;
-use Passwogen\Storage;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,16 +29,19 @@ class Find extends BaseCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $config = new Config();
-        $configData = $config->get();
-
-        $storage = new Storage($this->askMasterPassword($input, $output), $configData['storage_path']);
-
+        $storage = $this->getStorage($input, $output);
         $table = new Table($output);
         $table->setHeaders(['Key', 'Password']);
 
         $rows = [];
-        $items = $storage->find($input->getArgument('name'));
+        $items = [];
+
+        try {
+            $items = $storage->find($input->getArgument('name'));
+        } catch(\Exception $e) {
+            $this->error($output, $e->getMessage());
+        }
+
         foreach ($items as $item) {
             $rows[] = [
                 $item['key'],

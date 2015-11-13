@@ -30,13 +30,27 @@ class Generate extends BaseCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $config = new Config();
-        $configData = $config->get();
+        $configData = [];
+
+        try {
+            $config = new Config();
+            $configData = $config->get();
+        } catch(\Exception $e) {
+            $this->error($output, $e->getMessage());
+        }
 
         $storage = new Storage($this->askMasterPassword($input, $output), $configData['storage_path']);
 
         $name = $input->getArgument('name');
-        if ($storage->get($name) === null) {
+        $passwordItem = null;
+
+        try {
+            $passwordItem = $storage->get($name);
+        } catch(\Exception $e) {
+            $this->error($output, $e->getMessage());
+        }
+
+        if ($passwordItem === null) {
             $password = $this->generate($configData['length']);
             $storage->set($name, $password);
 

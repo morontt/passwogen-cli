@@ -2,6 +2,8 @@
 
 namespace Passwogen\Command;
 
+use Passwogen\Config;
+use Passwogen\Storage;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -29,6 +31,20 @@ class BaseCommand extends Command
         $question->setMaxAttempts(3);
 
         return $helper->ask($input, $output, $question);
+    }
+
+    protected function getStorage(InputInterface $input, OutputInterface $output)
+    {
+        $configData = [];
+
+        try {
+            $config = new Config();
+            $configData = $config->get();
+        } catch(\Exception $e) {
+            $this->error($output, $e->getMessage());
+        }
+
+        return new Storage($this->askMasterPassword($input, $output), $configData['storage_path']);
     }
 
     /**

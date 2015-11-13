@@ -121,7 +121,7 @@ class Storage
             $fs->touch($this->path);
         }
 
-        $fs->dumpFile($this->path, $content);
+        $fs->dumpFile($this->path, chunk_split($content, 64));
     }
 
     /**
