@@ -10,7 +10,7 @@ class Config
     {
         $configDir = $this->configDir();
         $configFile = $this->configFile();
-        $defaultStorage = $this->configDir() . '/secret.enc';
+        $defaultStorage = json_encode($this->configDir() . DIRECTORY_SEPARATOR . 'secret.enc');
 
         $fs = new Filesystem();
         if (!$fs->exists($configDir)) {
@@ -22,7 +22,7 @@ class Config
             $fs->dumpFile($configFile, <<<CONF
 {
     "length": 16,
-    "storage_path": "{$defaultStorage}"
+    "storage_path": {$defaultStorage}
 }\n
 CONF
             );
@@ -48,7 +48,9 @@ CONF
      */
     protected function configDir()
     {
-        return getenv("HOME") . '/.passwogen';
+        $home = (DIRECTORY_SEPARATOR === '\\') ? getenv('USERPROFILE') : getenv('HOME');
+
+        return $home . DIRECTORY_SEPARATOR . '.passwogen';
     }
 
     /**
@@ -56,6 +58,6 @@ CONF
      */
     protected function configFile()
     {
-        return $this->configDir() . '/config.json';
+        return $this->configDir() . DIRECTORY_SEPARATOR . 'config.json';
     }
 }
