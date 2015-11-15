@@ -16,7 +16,8 @@
         }
     ],
     "files": [
-        "LICENSE"
+        "LICENSE",
+        "vendor/symfony/console/Resources/bin/hiddeninput.exe"
     ],
     "compression": "GZ",
     "git-version": "package_version",
