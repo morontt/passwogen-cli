@@ -42,6 +42,7 @@ class Show extends BaseCommand
         if ($passwordItem !== null) {
             $output->writeln('');
             $output->writeln(sprintf('password: <comment>%s</comment>', $passwordItem['password']));
+            $this->copyToClipboard($passwordItem['password']);
         } else {
             $this->error($output, sprintf('key "%s" not found', $name));
         }

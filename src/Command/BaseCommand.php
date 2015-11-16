@@ -95,6 +95,8 @@ class BaseCommand extends Command
             $password = substr($random, 0, $length);
         } while (!$this->isStrong($password));
 
+        $this->copyToClipboard($password);
+
         return $password;
     }
 
@@ -105,5 +107,17 @@ class BaseCommand extends Command
     protected function isStrong($str)
     {
         return preg_match('/[a-z]/', $str) && preg_match('/[0-9]/', $str) && preg_match('/[A-Z]/', $str);
+    }
+
+    /**
+     * @param string $password
+     */
+    protected function copyToClipboard($password)
+    {
+        if (PHP_OS === 'Linux' && shell_exec('which xclip')) {
+            $p = popen('xclip -sel clip', 'w');
+            fwrite($p, $password);
+            pclose($p);
+        }
     }
 }

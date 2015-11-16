@@ -49,6 +49,10 @@ class Find extends BaseCommand
             ];
         }
 
+        if (count($items) === 1) {
+            $this->copyToClipboard($items[0]['password']);
+        }
+
         $table
             ->setRows($rows)
             ->render();

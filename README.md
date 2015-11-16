@@ -14,6 +14,13 @@
     mv passwogen.sh ~/bin/passwogen
 ```
 
+Для копирования пароля в буфер обмена в системе **Linux** необходимо установить *xclip*, если он ещё не установлен.
+
+```bash
+    # Debian, Ubuntu и другие производные:
+    sudo apt-get install xclip
+```
+
 ### Использование
 
 ```bash
