@@ -2,8 +2,6 @@
 
 namespace Passwogen\Command;
 
-use Passwogen\Config;
-use Passwogen\Storage;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -32,16 +30,8 @@ class Update extends BaseCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $configData = [];
-
-        try {
-            $config = new Config();
-            $configData = $config->get();
-        } catch(\Exception $e) {
-            $this->error($output, $e->getMessage());
-        }
-
-        $storage = new Storage($this->askMasterPassword($input, $output), $configData['storage_path']);
+        $config = $this->getConfig();
+        $storage = $this->getStorage($input, $output);
 
         $name = $input->getArgument('name');
         $passwordItem = null;
@@ -55,7 +45,7 @@ class Update extends BaseCommand
         if ($passwordItem !== null) {
             $password = $input->getOption('password');
             if ($password === null) {
-                $password = $this->generate($configData['length']);
+                $password = $this->generate($config['length']);
             }
 
             $storage->set($name, $password);

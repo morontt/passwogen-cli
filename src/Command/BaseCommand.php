@@ -2,7 +2,6 @@
 
 namespace Passwogen\Command;
 
-use Passwogen\Config;
 use Passwogen\Storage;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -11,6 +10,45 @@ use Symfony\Component\Console\Question\Question;
 
 class BaseCommand extends Command
 {
+    /**
+     * @var array
+     */
+    protected $config = [];
+
+
+    /**
+     * @return array
+     */
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
+    /**
+     * @param array $config
+     */
+    public function setConfig(array $config)
+    {
+        $this->config = $config;
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param $message
+     */
+    public static function error(OutputInterface $output, $message)
+    {
+        $error = '  ' . $message . '  ';
+        $emptyLine = str_repeat(' ', strlen($error));
+
+        $output->writeln('');
+        $output->writeln("<error>{$emptyLine}<error>");
+        $output->writeln("<error>{$error}<error>");
+        $output->writeln("<error>{$emptyLine}<error>");
+
+        exit(1);
+    }
+
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
@@ -33,18 +71,15 @@ class BaseCommand extends Command
         return $helper->ask($input, $output, $question);
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return Storage
+     */
     protected function getStorage(InputInterface $input, OutputInterface $output)
     {
-        $configData = [];
-
-        try {
-            $config = new Config();
-            $configData = $config->get();
-        } catch(\Exception $e) {
-            $this->error($output, $e->getMessage());
-        }
-
-        return new Storage($this->askMasterPassword($input, $output), $configData['storage_path']);
+        $config = $this->getConfig();
+        return new Storage($this->askMasterPassword($input, $output), $config['storage_path']);
     }
 
     /**
@@ -70,22 +105,5 @@ class BaseCommand extends Command
     protected function isStrong($str)
     {
         return preg_match('/[a-z]/', $str) && preg_match('/[0-9]/', $str) && preg_match('/[A-Z]/', $str);
-    }
-
-    /**
-     * @param OutputInterface $output
-     * @param $message
-     */
-    protected function error(OutputInterface $output, $message)
-    {
-        $error = '  ' . $message . '  ';
-        $emptyLine = str_repeat(' ', strlen($error));
-
-        $output->writeln('');
-        $output->writeln("<error>{$emptyLine}<error>");
-        $output->writeln("<error>{$error}<error>");
-        $output->writeln("<error>{$emptyLine}<error>");
-
-        exit(1);
     }
 }
