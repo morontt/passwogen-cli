@@ -30,7 +30,7 @@ class Generate extends BaseCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $config = $this->getConfig();
+        $config = $this->getApplicationConfig();
         $storage = $this->getStorage($input, $output);
 
         $name = $input->getArgument('name');

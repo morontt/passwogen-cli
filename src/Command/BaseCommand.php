@@ -19,7 +19,7 @@ class BaseCommand extends Command
     /**
      * @return array
      */
-    public function getConfig()
+    public function getApplicationConfig()
     {
         return $this->config;
     }
@@ -27,7 +27,7 @@ class BaseCommand extends Command
     /**
      * @param array $config
      */
-    public function setConfig(array $config)
+    public function setApplicationConfig(array $config)
     {
         $this->config = $config;
     }
@@ -78,7 +78,7 @@ class BaseCommand extends Command
      */
     protected function getStorage(InputInterface $input, OutputInterface $output)
     {
-        $config = $this->getConfig();
+        $config = $this->getApplicationConfig();
         return new Storage($this->askMasterPassword($input, $output), $config['storage_path']);
     }
 

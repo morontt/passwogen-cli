@@ -11,7 +11,7 @@ class CommandListener
     /**
      * @param ConsoleCommandEvent $event
      */
-    public function beforeRun(ConsoleCommandEvent $event)
+    public static function beforeRun(ConsoleCommandEvent $event)
     {
         if (!function_exists('gzencode')) {
             $event->getOutput()->writeln('');
@@ -30,7 +30,10 @@ class CommandListener
         try {
             $config = new Config();
             $configData = $config->get();
-            $command->setConfig($configData);
+
+            if (method_exists($command, 'setApplicationConfig')) {
+                $command->setApplicationConfig($configData);
+            }
         } catch(\Exception $e) {
             BaseCommand::error($event->getOutput(), $e->getMessage());
         }
