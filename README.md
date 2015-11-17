@@ -37,12 +37,8 @@
     # при создании и обновлении пароль можно указать явно, через опцию -p
     # или --password
 
-    # посмотреть пароль для mail.ru
-    passwogen show mail.ru
-    # или
-    passwogen s mail.ru
-
     # поиск пароля с mail в ключе
+    # если возвращается одна запись, то пароль попадает в буфер обмена
     passwogen find mail
     # или
     passwogen f mail
