@@ -119,5 +119,11 @@ class BaseCommand extends Command
             fwrite($p, $password);
             pclose($p);
         }
+
+        if (PHP_OS === 'Darwin' && shell_exec('which pbcopy')) {
+            $p = popen('pbcopy', 'w');
+            fwrite($p, $password);
+            pclose($p);
+        }
     }
 }
