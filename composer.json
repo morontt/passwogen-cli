@@ -14,7 +14,6 @@
         "psr-4": { "Passwogen\\": "src/" }
     },
     "require": {
-        "php": ">=5.4",
         "ext-openssl": "*",
         "ext-zlib": "*",
         "symfony/console": "2.7.*",

@@ -31,10 +31,10 @@ class Find extends BaseCommand
     {
         $storage = $this->getStorage($input, $output);
         $table = new Table($output);
-        $table->setHeaders(['Key', 'Password']);
+        $table->setHeaders(array('Key', 'Password'));
 
-        $rows = [];
-        $items = [];
+        $rows = array();
+        $items = array();
 
         try {
             $items = $storage->find($input->getArgument('name'));
@@ -43,10 +43,10 @@ class Find extends BaseCommand
         }
 
         foreach ($items as $item) {
-            $rows[] = [
+            $rows[] = array(
                 $item['key'],
                 sprintf('<comment>%s</comment>', $item['password']),
-            ];
+            );
         }
 
         if (count($items) === 1) {

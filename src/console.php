@@ -8,7 +8,7 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-$console = new Application('Passwogen-CLI', '0.1.1');
+$console = new Application('Passwogen-CLI', '0.2');
 $console->add(new Generate());
 $console->add(new Update());
 $console->add(new Find());

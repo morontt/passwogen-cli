@@ -13,7 +13,7 @@ class BaseCommand extends Command
     /**
      * @var array
      */
-    protected $config = [];
+    protected $config = array();
 
 
     /**
@@ -90,7 +90,7 @@ class BaseCommand extends Command
     {
         do {
             $random = base64_encode(openssl_random_pseudo_bytes(256));
-            $random = str_replace(['+', '/', '0', 'O', 'I', 'l'], '', $random);
+            $random = str_replace(array('+', '/', '0', 'O', 'I', 'l'), '', $random);
 
             $password = substr($random, 0, $length);
         } while (!$this->isStrong($password));

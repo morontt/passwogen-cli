@@ -13,7 +13,7 @@ class CommandListener
      */
     public static function beforeRun(ConsoleCommandEvent $event)
     {
-        if (!function_exists('gzencode')) {
+        if (!function_exists('gzinflate')) {
             $event->getOutput()->writeln('');
             $event->getOutput()->writeln('Install and enable the <comment>Zlib</comment> extension.');
             exit(1);

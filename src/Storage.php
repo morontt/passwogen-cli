@@ -51,7 +51,8 @@ class Storage
     {
         $updated = false;
         $items = $this->getItems();
-        $curr = (new \DateTime('now'))->format('Y-m-d H:i:s');
+        $dt = new \DateTime('now');
+        $curr = $dt->format('Y-m-d H:i:s');
 
         foreach ($items as $idx => $item) {
             if ($item['key'] === $key) {
@@ -63,11 +64,11 @@ class Storage
         }
 
         if (!$updated) {
-            $items[] = [
+            $items[] = array(
                 'key' => $key,
                 'password' => $value,
                 'time' => $curr,
-            ];
+            );
         }
 
         $this->save($items);
@@ -79,7 +80,7 @@ class Storage
      */
     public function find($key)
     {
-        $result = [];
+        $result = array();
         foreach ($this->getItems() as $item) {
             if (@preg_match("/{$key}/i", $item['key'])) {
                 $result[] = $item;
@@ -94,8 +95,9 @@ class Storage
      */
     public function outdated()
     {
-        $result = [];
-        $curr = (new \DateTime('now'))->format('U');
+        $result = array();
+        $dt = new \DateTime('now');
+        $curr = $dt->format('U');
         $limit = (int)$curr - 15552000; // 60 * 60 * 24 * 30 * 6
         foreach ($this->getItems() as $item) {
             $itemTime = \DateTime::createFromFormat('Y-m-d H:i:s', $item['time']);
@@ -116,12 +118,12 @@ class Storage
     {
         $fs = new Filesystem();
         if (!$fs->exists($this->path)) {
-            return [];
+            return array();
         }
 
         $content = file_get_contents($this->path);
         if (!$content) {
-            return [];
+            return array();
         }
 
         $data = json_decode($this->decode($content), true);
@@ -153,7 +155,7 @@ class Storage
      */
     protected function encode($str)
     {
-        return openssl_encrypt(gzencode($str), 'bf', $this->passwd, 0, $this->getVector());
+        return openssl_encrypt(gzdeflate($str, 9), 'bf', $this->passwd, 0, $this->getVector());
     }
 
     /**
@@ -162,7 +164,7 @@ class Storage
      */
     protected function decode($raw)
     {
-        return @gzdecode(openssl_decrypt($raw, 'bf', $this->passwd, 0, $this->getVector()));
+        return @gzinflate(openssl_decrypt($raw, 'bf', $this->passwd, 0, $this->getVector()));
     }
 
     /**

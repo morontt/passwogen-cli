@@ -25,10 +25,10 @@ class Outdated extends BaseCommand
     {
         $storage = $this->getStorage($input, $output);
         $table = new Table($output);
-        $table->setHeaders(['Key', 'Last Update']);
+        $table->setHeaders(array('Key', 'Last Update'));
 
-        $rows = [];
-        $items = [];
+        $rows = array();
+        $items = array();
 
         try {
             $items = $storage->outdated();
@@ -38,10 +38,10 @@ class Outdated extends BaseCommand
 
         foreach ($items as $item) {
             $itemTime = \DateTime::createFromFormat('Y-m-d H:i:s', $item['time']);
-            $rows[] = [
+            $rows[] = array(
                 $item['key'],
                 sprintf('<comment>%s</comment>', $itemTime->format('d M Y')),
-            ];
+            );
         }
 
         $table
