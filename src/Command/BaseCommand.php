@@ -125,5 +125,11 @@ class BaseCommand extends Command
             fwrite($p, $password);
             pclose($p);
         }
+
+        if (DIRECTORY_SEPARATOR === '\\' && shell_exec('where clip 2>nul')) {
+            $p = popen('clip', 'w');
+            fwrite($p, $password);
+            pclose($p);
+        }
     }
 }
