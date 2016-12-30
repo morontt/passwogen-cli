@@ -21,7 +21,7 @@
     ],
     "compression": "GZ",
     "git-version": "package_version",
-    "main": "bin/script.php",
+    "main": "bin/passwogen",
     "output": "passwogen.phar",
     "stub": true,
     "chmod": "0755"

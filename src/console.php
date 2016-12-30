@@ -1,5 +1,6 @@
 <?php
 
+use Passwogen\Command\Delete;
 use Passwogen\Command\Find;
 use Passwogen\Command\Generate;
 use Passwogen\Command\Outdated;
@@ -13,6 +14,7 @@ $console->add(new Generate());
 $console->add(new Update());
 $console->add(new Find());
 $console->add(new Outdated());
+$console->add(new Delete());
 
 $dispatcher = new EventDispatcher();
 $dispatcher->addListener(ConsoleEvents::COMMAND, 'Passwogen\\Listener\\CommandListener::beforeRun');

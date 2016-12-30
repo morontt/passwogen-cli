@@ -45,8 +45,8 @@ class Storage
     }
 
     /**
-     * @param $key
-     * @param $value
+     * @param string $key
+     * @param string $value
      */
     public function set($key, $value)
     {
@@ -71,6 +71,18 @@ class Storage
                 'time' => $curr,
             );
         }
+
+        $this->save($items);
+    }
+
+    /**
+     * @param string $key
+     */
+    public function remove($key)
+    {
+        $items = array_filter($this->getItems(), function ($el) use ($key) {
+            return $el['key'] !== $key;
+        });
 
         $this->save($items);
     }

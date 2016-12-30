@@ -14,6 +14,12 @@
     mv passwogen.phar ~/bin/passwogen
 ```
 
+Так же можно установить его глобально через [composer](https://getcomposer.org):
+
+```bash
+    composer global require morontt/passwogen-cli
+```
+
 Для копирования пароля в буфер обмена в системе **Linux** необходимо установить *xclip*, если он ещё не установлен.
 
 ```bash
@@ -42,6 +48,11 @@
     passwogen find mail
     # или
     passwogen f mail
+
+    # удаление пароля для ключа example.org
+    passwogen delete example.org
+    # или
+    passwogen d example.org
 
     # список просроченных паролей (не обновлялись более полугода)
     passwogen outdated
