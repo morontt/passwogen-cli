@@ -15,7 +15,6 @@ class BaseCommand extends Command
      */
     protected $config = array();
 
-
     /**
      * @return array
      */
@@ -52,6 +51,7 @@ class BaseCommand extends Command
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
+     *
      * @return mixed
      */
     protected function askMasterPassword(InputInterface $input, OutputInterface $output)
@@ -63,6 +63,7 @@ class BaseCommand extends Command
             if (trim($value) == '') {
                 throw new \Exception('The password can not be empty');
             }
+
             return $value;
         });
         $question->setHidden(true);
@@ -74,16 +75,19 @@ class BaseCommand extends Command
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
+     *
      * @return Storage
      */
     protected function getStorage(InputInterface $input, OutputInterface $output)
     {
         $config = $this->getApplicationConfig();
+
         return new Storage($this->askMasterPassword($input, $output), $config['storage_path']);
     }
 
     /**
      * @param int $length
+     *
      * @return string
      */
     protected function generate($length)
@@ -102,6 +106,7 @@ class BaseCommand extends Command
 
     /**
      * @param $str
+     *
      * @return bool
      */
     protected function isStrong($str)

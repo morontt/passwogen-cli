@@ -25,6 +25,7 @@ class Find extends BaseCommand
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
+     *
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -38,7 +39,7 @@ class Find extends BaseCommand
 
         try {
             $items = $storage->find($input->getArgument('name'));
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->error($output, $e->getMessage());
         }
 

@@ -19,6 +19,7 @@ class Outdated extends BaseCommand
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
+     *
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -32,7 +33,7 @@ class Outdated extends BaseCommand
 
         try {
             $items = $storage->outdated();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->error($output, $e->getMessage());
         }
 

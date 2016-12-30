@@ -26,6 +26,7 @@ class Update extends BaseCommand
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
+     *
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -38,7 +39,7 @@ class Update extends BaseCommand
 
         try {
             $passwordItem = $storage->get($name);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->error($output, $e->getMessage());
         }
 

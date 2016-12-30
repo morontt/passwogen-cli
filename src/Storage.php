@@ -28,6 +28,7 @@ class Storage
 
     /**
      * @param string $key
+     *
      * @return null|array
      */
     public function get($key)
@@ -76,6 +77,7 @@ class Storage
 
     /**
      * @param $key
+     *
      * @return array
      */
     public function find($key)
@@ -112,6 +114,7 @@ class Storage
 
     /**
      * @return array
+     *
      * @throws \Exception
      */
     protected function getItems()
@@ -151,6 +154,7 @@ class Storage
 
     /**
      * @param string $str
+     *
      * @return string
      */
     protected function encode($str)
@@ -160,6 +164,7 @@ class Storage
 
     /**
      * @param string $raw
+     *
      * @return string
      */
     protected function decode($raw)

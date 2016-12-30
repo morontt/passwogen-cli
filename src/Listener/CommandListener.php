@@ -34,7 +34,7 @@ class CommandListener
             if (method_exists($command, 'setApplicationConfig')) {
                 $command->setApplicationConfig($configData);
             }
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             BaseCommand::error($event->getOutput(), $e->getMessage());
         }
     }

@@ -31,6 +31,7 @@ CONF
 
     /**
      * @return mixed
+     *
      * @throws \Exception
      */
     public function get()
