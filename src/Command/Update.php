@@ -2,7 +2,6 @@
 
 namespace Passwogen\Command;
 
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -12,13 +11,10 @@ class Update extends BaseCommand
     protected function configure()
     {
         $this
+            ->addPasswordName()
+            ->addViewOption()
             ->setName('update')
             ->setDescription('Update password')
-            ->addArgument(
-                'name',
-                InputArgument::REQUIRED,
-                'Name for password'
-            )
             ->addOption('password', 'p', InputOption::VALUE_OPTIONAL, 'password')
         ;
     }
@@ -52,7 +48,10 @@ class Update extends BaseCommand
             $storage->set($name, $password);
 
             $output->writeln('');
-            $output->writeln(sprintf('password: <comment>%s</comment>', $password));
+            $output->writeln(sprintf(
+                'password: <comment>%s</comment>',
+                $this->showPassword($password, $input->getOption('show-password'))
+            ));
         } else {
             $this->error($output, sprintf('key "%s" not found', $name));
         }

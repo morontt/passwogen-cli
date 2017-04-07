@@ -3,7 +3,6 @@
 namespace Passwogen\Command;
 
 use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -12,13 +11,10 @@ class Find extends BaseCommand
     protected function configure()
     {
         $this
+            ->addPasswordName()
+            ->addViewOption()
             ->setName('find')
             ->setDescription('Find passwords (by regexp)')
-            ->addArgument(
-                'name',
-                InputArgument::REQUIRED,
-                'Name for password'
-            )
         ;
     }
 
@@ -43,10 +39,12 @@ class Find extends BaseCommand
             $this->error($output, $e->getMessage());
         }
 
+        $showPassword = $input->getOption('show-password');
+
         foreach ($items as $item) {
             $rows[] = array(
                 $item['key'],
-                sprintf('<comment>%s</comment>', $item['password']),
+                sprintf('<comment>%s</comment>', $this->showPassword($item['password'], $showPassword)),
             );
         }
 

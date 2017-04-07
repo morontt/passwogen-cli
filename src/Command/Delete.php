@@ -2,7 +2,6 @@
 
 namespace Passwogen\Command;
 
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -11,13 +10,9 @@ class Delete extends BaseCommand
     protected function configure()
     {
         $this
+            ->addPasswordName()
             ->setName('delete')
             ->setDescription('Remove password')
-            ->addArgument(
-                'name',
-                InputArgument::REQUIRED,
-                'Name for password'
-            )
         ;
     }
 

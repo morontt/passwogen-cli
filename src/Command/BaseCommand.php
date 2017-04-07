@@ -4,7 +4,9 @@ namespace Passwogen\Command;
 
 use Passwogen\Storage;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
@@ -46,6 +48,52 @@ class BaseCommand extends Command
         $output->writeln("<error>{$emptyLine}<error>");
 
         exit(1);
+    }
+
+    /**
+     * @return $this
+     */
+    protected function addPasswordName()
+    {
+        $this
+            ->addArgument(
+                'name',
+                InputArgument::REQUIRED,
+                'Name for password'
+            )
+        ;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    protected function addViewOption()
+    {
+        $this->addOption('show-password', 's', InputOption::VALUE_NONE, 'Show password');
+
+        return $this;
+    }
+
+    /**
+     * @param string $password
+     * @param bool $showPassword
+     *
+     * @return string
+     */
+    protected function showPassword($password, $showPassword)
+    {
+        $result = '';
+        if ($showPassword) {
+            $result = $password;
+        } else {
+            for ($i = 0; $i < $this->config['length']; $i++) {
+                $result .= '*';
+            }
+        }
+
+        return $result;
     }
 
     /**
