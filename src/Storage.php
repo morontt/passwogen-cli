@@ -136,7 +136,7 @@ class Storage
             return array();
         }
 
-        $content = file_get_contents($this->path);
+        $content = trim(file_get_contents($this->path));
         if (!$content) {
             return array();
         }
