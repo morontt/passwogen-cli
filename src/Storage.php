@@ -6,6 +6,8 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class Storage
 {
+    const CIPHER_NAME = 'aes256';
+
     /**
      * @var string
      */
@@ -171,7 +173,7 @@ class Storage
      */
     protected function encode($str)
     {
-        return openssl_encrypt(gzdeflate($str, 9), 'bf', $this->passwd, 0, $this->getVector());
+        return openssl_encrypt(gzdeflate($str, 9), self::CIPHER_NAME, $this->passwd, 0, $this->getVector());
     }
 
     /**
@@ -181,7 +183,7 @@ class Storage
      */
     protected function decode($raw)
     {
-        return @gzinflate(openssl_decrypt($raw, 'bf', $this->passwd, 0, $this->getVector()));
+        return @gzinflate(openssl_decrypt($raw, self::CIPHER_NAME, $this->passwd, 0, $this->getVector()));
     }
 
     /**
@@ -189,6 +191,6 @@ class Storage
      */
     protected function getVector()
     {
-        return substr(sha1($this->passwd), 0, 8);
+        return substr(sha1($this->passwd), 0, openssl_cipher_iv_length(self::CIPHER_NAME));
     }
 }
