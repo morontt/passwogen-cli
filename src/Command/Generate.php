@@ -13,6 +13,7 @@ class Generate extends BaseCommand
         $this
             ->addPasswordName()
             ->addViewOption()
+            ->addLengthOption()
             ->setName('generate')
             ->setDescription('Generate password')
             ->addOption('password', 'p', InputOption::VALUE_OPTIONAL, 'password')
@@ -27,7 +28,6 @@ class Generate extends BaseCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $config = $this->getApplicationConfig();
         $storage = $this->getStorage($input, $output);
 
         $name = $input->getArgument('name');
@@ -42,7 +42,8 @@ class Generate extends BaseCommand
         if ($passwordItem === null) {
             $password = $input->getOption('password');
             if ($password === null) {
-                $password = $this->generate($config['length']);
+                $input->getOption('show-password');
+                $password = $this->generate($this->passwordLength($input, $output));
             }
             $storage->set($name, $password);
 

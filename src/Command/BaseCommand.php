@@ -2,6 +2,7 @@
 
 namespace Passwogen\Command;
 
+use Passwogen\Config\ConfigDTO;
 use Passwogen\Storage;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -12,23 +13,9 @@ use Symfony\Component\Console\Question\Question;
 
 class BaseCommand extends Command
 {
-    /**
-     * @var array
-     */
-    protected $config = array();
+    private ?ConfigDTO $config;
 
-    /**
-     * @return array
-     */
-    public function getApplicationConfig(): array
-    {
-        return $this->config;
-    }
-
-    /**
-     * @param array $config
-     */
-    public function setApplicationConfig(array $config): void
+    public function setApplicationConfig(ConfigDTO $config): void
     {
         $this->config = $config;
     }
@@ -69,7 +56,7 @@ class BaseCommand extends Command
     /**
      * @return $this
      */
-    protected function addViewOption()
+    protected function addViewOption(): self
     {
         $this->addOption('show-password', 's', InputOption::VALUE_NONE, 'Show password');
 
@@ -77,17 +64,21 @@ class BaseCommand extends Command
     }
 
     /**
-     * @param string $password
-     * @param bool $showPassword
-     *
-     * @return string
+     * @return $this
      */
-    protected function showPassword($password, $showPassword)
+    protected function addLengthOption(): self
+    {
+        $this->addOption('length', 'l', InputOption::VALUE_REQUIRED, 'Password length');
+
+        return $this;
+    }
+
+    protected function showPassword(string $password, bool $showPassword): string
     {
         if ($showPassword) {
             $result = $password;
         } else {
-            $result = str_repeat('*', $this->config['length']);
+            $result = str_repeat('*', $this->config->length);
         }
 
         return $result;
@@ -125,9 +116,7 @@ class BaseCommand extends Command
      */
     protected function getStorage(InputInterface $input, OutputInterface $output)
     {
-        $config = $this->getApplicationConfig();
-
-        return new Storage($this->askMasterPassword($input, $output), $config['storage_path']);
+        return new Storage($this->askMasterPassword($input, $output), $this->config->storagePath);
     }
 
     /**
@@ -157,6 +146,16 @@ class BaseCommand extends Command
     protected function isStrong(string $str): bool
     {
         return preg_match('/[a-z]/', $str) && preg_match('/\d/', $str) && preg_match('/[A-Z]/', $str);
+    }
+
+    protected function passwordLength(InputInterface $input, OutputInterface $output): int
+    {
+        $length  = (int)($input->getOption('length') ?? $this->config->length);
+        if ($length < 3) {
+            self::error($output, 'Length of password must be at least 3 characters long');
+        }
+
+        return $length;
     }
 
     /**
