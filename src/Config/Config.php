@@ -1,6 +1,6 @@
 <?php
 
-namespace Passwogen;
+namespace Passwogen\Config;
 
 use Symfony\Component\Filesystem\Filesystem;
 

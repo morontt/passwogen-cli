@@ -3,7 +3,7 @@
 namespace Passwogen\Listener;
 
 use Passwogen\Command\BaseCommand;
-use Passwogen\Config;
+use Passwogen\Config\Config;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 
 class CommandListener
