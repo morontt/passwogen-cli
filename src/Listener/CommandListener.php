@@ -26,6 +26,9 @@ class CommandListener
         }
 
         $command = $event->getCommand();
+        if (!$command) {
+            BaseCommand::error($event->getOutput(), 'Command is null');
+        }
 
         try {
             $config = new Config();

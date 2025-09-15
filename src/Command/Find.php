@@ -8,7 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Find extends BaseCommand
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addPasswordName()
@@ -22,9 +22,9 @@ class Find extends BaseCommand
      * @param InputInterface $input
      * @param OutputInterface $output
      *
-     * @return void
+     * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $storage = $this->getStorage($input, $output);
         $table = new Table($output);
@@ -36,7 +36,7 @@ class Find extends BaseCommand
         try {
             $items = $storage->find($input->getArgument('name'));
         } catch (\Exception $e) {
-            $this->error($output, $e->getMessage());
+            self::error($output, $e->getMessage());
         }
 
         $showPassword = $input->getOption('show-password');
@@ -55,5 +55,7 @@ class Find extends BaseCommand
         $table
             ->setRows($rows)
             ->render();
+
+        return 0;
     }
 }

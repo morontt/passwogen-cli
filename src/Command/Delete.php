@@ -7,7 +7,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Delete extends BaseCommand
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addPasswordName()
@@ -20,7 +20,7 @@ class Delete extends BaseCommand
      * @param InputInterface $input
      * @param OutputInterface $output
      *
-     * @return void
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -32,7 +32,7 @@ class Delete extends BaseCommand
         try {
             $passwordItem = $storage->get($name);
         } catch (\Exception $e) {
-            $this->error($output, $e->getMessage());
+            self::error($output, $e->getMessage());
         }
 
         if ($passwordItem !== null) {
@@ -41,7 +41,9 @@ class Delete extends BaseCommand
             $output->writeln('');
             $output->writeln(sprintf('remove: <comment>%s</comment>', $name));
         } else {
-            $this->error($output, sprintf('key "%s" not found', $name));
+            self::error($output, sprintf('key "%s" not found', $name));
         }
+
+        return 0;
     }
 }

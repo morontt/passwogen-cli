@@ -32,13 +32,13 @@ CONF
     /**
      * @return mixed
      *
-     * @throws \Exception
+     * @throws \RuntimeException
      */
     public function get()
     {
         $data = json_decode(file_get_contents($this->configFile()), true);
         if (!$data) {
-            throw new \Exception(sprintf('Invalid config file: %s', $this->configFile()));
+            throw new \RuntimeException(sprintf('Invalid config file: %s', $this->configFile()));
         }
 
         return $data;
@@ -47,7 +47,7 @@ CONF
     /**
      * @return string
      */
-    protected function configDir()
+    protected function configDir(): string
     {
         $home = (DIRECTORY_SEPARATOR === '\\') ? getenv('USERPROFILE') : getenv('HOME');
 
@@ -57,7 +57,7 @@ CONF
     /**
      * @return string
      */
-    protected function configFile()
+    protected function configFile(): string
     {
         return $this->configDir() . DIRECTORY_SEPARATOR . 'config.json';
     }

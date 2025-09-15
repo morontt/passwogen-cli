@@ -8,7 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Outdated extends BaseCommand
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('outdated')
@@ -20,9 +20,9 @@ class Outdated extends BaseCommand
      * @param InputInterface $input
      * @param OutputInterface $output
      *
-     * @return void
+     * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $storage = $this->getStorage($input, $output);
         $table = new Table($output);
@@ -34,7 +34,7 @@ class Outdated extends BaseCommand
         try {
             $items = $storage->outdated();
         } catch (\Exception $e) {
-            $this->error($output, $e->getMessage());
+            self::error($output, $e->getMessage());
         }
 
         foreach ($items as $item) {
@@ -48,5 +48,7 @@ class Outdated extends BaseCommand
         $table
             ->setRows($rows)
             ->render();
+
+        return 0;
     }
 }

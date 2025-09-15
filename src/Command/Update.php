@@ -8,7 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Update extends BaseCommand
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addPasswordName()
@@ -23,9 +23,9 @@ class Update extends BaseCommand
      * @param InputInterface $input
      * @param OutputInterface $output
      *
-     * @return void
+     * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $config = $this->getApplicationConfig();
         $storage = $this->getStorage($input, $output);
@@ -36,7 +36,7 @@ class Update extends BaseCommand
         try {
             $passwordItem = $storage->get($name);
         } catch (\Exception $e) {
-            $this->error($output, $e->getMessage());
+            self::error($output, $e->getMessage());
         }
 
         if ($passwordItem !== null) {
@@ -53,7 +53,9 @@ class Update extends BaseCommand
                 $this->showPassword($password, $input->getOption('show-password'))
             ));
         } else {
-            $this->error($output, sprintf('key "%s" not found', $name));
+            self::error($output, sprintf('key "%s" not found', $name));
         }
+
+        return 0;
     }
 }

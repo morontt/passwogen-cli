@@ -5,8 +5,8 @@
     "authors": [
         {
             "name": "Alexander Harchenko",
-            "email": "morontt@gmail.com",
-            "homepage": "https://morontt.info",
+            "email": "morontt@yandex.ru",
+            "homepage": "https://xelbot.com",
             "role": "Developer"
         }
     ],
@@ -17,9 +17,12 @@
         "ext-json": "*",
         "ext-openssl": "*",
         "ext-zlib": "*",
-        "symfony/console": "2.8.*",
-        "symfony/filesystem": "2.8.*",
-        "symfony/event-dispatcher": "2.8.*"
+        "symfony/console": "6.4.*",
+        "symfony/filesystem": "6.4.*",
+        "symfony/event-dispatcher": "6.4.*"
+    },
+    "conflict": {
+        "symfony/string": ">=7.0"
     },
     "minimum-stability": "stable"
 }

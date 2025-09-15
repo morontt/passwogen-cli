@@ -20,7 +20,7 @@ class BaseCommand extends Command
     /**
      * @return array
      */
-    public function getApplicationConfig()
+    public function getApplicationConfig(): array
     {
         return $this->config;
     }
@@ -28,7 +28,7 @@ class BaseCommand extends Command
     /**
      * @param array $config
      */
-    public function setApplicationConfig(array $config)
+    public function setApplicationConfig(array $config): void
     {
         $this->config = $config;
     }
@@ -53,7 +53,7 @@ class BaseCommand extends Command
     /**
      * @return $this
      */
-    protected function addPasswordName()
+    protected function addPasswordName(): self
     {
         $this
             ->addArgument(
@@ -84,13 +84,10 @@ class BaseCommand extends Command
      */
     protected function showPassword($password, $showPassword)
     {
-        $result = '';
         if ($showPassword) {
             $result = $password;
         } else {
-            for ($i = 0; $i < $this->config['length']; $i++) {
-                $result .= '*';
-            }
+            $result = str_repeat('*', $this->config['length']);
         }
 
         return $result;
@@ -108,8 +105,8 @@ class BaseCommand extends Command
 
         $question = new Question('Enter your master password: ');
         $question->setValidator(function ($value) {
-            if (trim($value) == '') {
-                throw new \Exception('The password can not be empty');
+            if (trim($value) === '') {
+                throw new \RuntimeException('The password can not be empty');
             }
 
             return $value;
@@ -138,7 +135,7 @@ class BaseCommand extends Command
      *
      * @return string
      */
-    protected function generate($length)
+    protected function generate(int $length): string
     {
         do {
             $random = base64_encode(openssl_random_pseudo_bytes(256));
@@ -153,19 +150,19 @@ class BaseCommand extends Command
     }
 
     /**
-     * @param $str
+     * @param string $str
      *
      * @return bool
      */
-    protected function isStrong($str)
+    protected function isStrong(string $str): bool
     {
-        return preg_match('/[a-z]/', $str) && preg_match('/[0-9]/', $str) && preg_match('/[A-Z]/', $str);
+        return preg_match('/[a-z]/', $str) && preg_match('/\d/', $str) && preg_match('/[A-Z]/', $str);
     }
 
     /**
      * @param string $password
      */
-    protected function copyToClipboard($password)
+    protected function copyToClipboard(string $password): void
     {
         if (PHP_OS === 'Linux' && shell_exec('which xclip')) {
             $p = popen('xclip -sel clip', 'w');
